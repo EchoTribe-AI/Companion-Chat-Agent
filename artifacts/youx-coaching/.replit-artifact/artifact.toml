@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "YouX Coaching Companion"
+version = "1.0.0"
+id = "artifacts/youx-coaching"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24660
+
+[services.development]
+run = "pnpm --filter @workspace/youx-coaching run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/youx-coaching", "run", "build" ]
+publicDir = "artifacts/youx-coaching/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24660"
+BASE_PATH = "/"
