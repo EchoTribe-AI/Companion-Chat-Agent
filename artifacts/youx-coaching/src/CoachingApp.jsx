@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIsMobile } from "./hooks/use-mobile";
 
 // ── BRAND TOKENS ──────────────────────────────────────────────────────────────
 const C = {
@@ -314,6 +315,7 @@ function SectionTitle({ children, sub }) {
 // ── SESSIONS VIEW ─────────────────────────────────────────────────────────────
 
 function SessionsView({ isCoach }) {
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState(4);
   return (
     <div>
@@ -332,7 +334,7 @@ function SessionsView({ isCoach }) {
       {SESSIONS.filter(s => s.num === open).map(s => (
         <div key={s.num}>
           <Card style={{ marginBottom: 14 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14, gap: 8 }}>
               <div>
                 <div style={{ fontSize: 11, color: C.textLt, fontWeight: 600, letterSpacing: "0.06em", marginBottom: 4 }}>
                   SESSION {s.num} · {s.date.toUpperCase()}
@@ -345,7 +347,7 @@ function SessionsView({ isCoach }) {
               <div style={{ fontSize: 11, color: C.teal, fontWeight: 700, letterSpacing: "0.06em", marginBottom: 4 }}>TODAY'S INTENTION</div>
               <p style={{ fontSize: 14, color: C.tealDk, fontStyle: "italic", margin: 0 }}>"{s.intention}"</p>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
               <div>
                 <div style={{ fontSize: 12, color: C.textLt, fontWeight: 700, letterSpacing: "0.06em", marginBottom: 8 }}>TOPICS COVERED</div>
                 {s.topics.map((t, i) => (
@@ -394,6 +396,7 @@ function SessionsView({ isCoach }) {
 // ── HOMEWORK TRACKER ──────────────────────────────────────────────────────────
 
 function HomeworkView() {
+  const isMobile = useIsMobile();
   const [checked, setChecked] = useState(() => {
     const all = {};
     SESSIONS.forEach(s => s.homework.forEach(h => { all[h.id] = h.done; }));
@@ -411,7 +414,7 @@ function HomeworkView() {
   return (
     <div>
       <SectionTitle sub="Track what's assigned, in progress, and done">Homework Tracker</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 12, marginBottom: 24 }}>
         {[
           { label: "Open", value: open.length + allPrevOpen.length, color: C.clay },
           { label: "Completed This Session", value: done.length, color: C.teal },
@@ -478,6 +481,7 @@ function HomeworkView() {
 // ── DAILY PRACTICE ────────────────────────────────────────────────────────────
 
 function DailyView() {
+  const isMobile = useIsMobile();
   const [checked, setChecked] = useState({});
   const [expanded, setExpanded] = useState(null);
   const toggle = id => setChecked(p => ({ ...p, [id]: !p[id] }));
@@ -518,7 +522,7 @@ function DailyView() {
               {checked[p.id] && <span style={{ color: "white", fontSize: 13 }}>✓</span>}
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-start", gap: isMobile ? 8 : 0 }}>
                 <div>
                   <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
                     <span style={{ fontSize: 18 }}>{p.icon}</span>
@@ -528,8 +532,11 @@ function DailyView() {
                   <p style={{ fontSize: 13, color: C.textMd, margin: 0, lineHeight: 1.5 }}>{p.detail}</p>
                 </div>
                 <button onClick={() => setExpanded(expanded === p.id ? null : p.id)} style={{
-                  background: "none", border: `1px solid ${C.border}`, borderRadius: 8, padding: "5px 12px",
-                  fontSize: 12, color: C.textMd, cursor: "pointer", whiteSpace: "nowrap", marginLeft: 12,
+                  background: "none", border: `1px solid ${C.border}`, borderRadius: 8,
+                  padding: isMobile ? "8px 16px" : "5px 12px",
+                  fontSize: 12, color: C.textMd, cursor: "pointer",
+                  marginLeft: isMobile ? 0 : 12,
+                  alignSelf: isMobile ? "flex-start" : "auto",
                   transition: "all 0.15s",
                 }}>{expanded === p.id ? "hide" : "how-to"}</button>
               </div>
@@ -561,6 +568,7 @@ function DailyView() {
 // ── AI CHAT ───────────────────────────────────────────────────────────────────
 
 function ChatView({ isCoach }) {
+  const isMobile = useIsMobile();
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -607,7 +615,7 @@ function ChatView({ isCoach }) {
     : ["What should I work on today?", "Guide me through box breathing", "Help me use cognitive defusion right now", "I'm feeling overwhelmed — what do I do?"];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 140px)" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: isMobile ? "calc(100svh - 140px)" : "calc(100vh - 140px)" }}>
       <SectionTitle sub={isCoach ? "Your coaching intelligence assistant" : "Your YouX AI Coach — knows your program, tools, and sessions"}>
         {isCoach ? "Coach AI Assistant" : "AI Coach"}
       </SectionTitle>
@@ -664,8 +672,10 @@ function ChatView({ isCoach }) {
         />
         <button onClick={send} disabled={!input.trim() || loading} style={{
           background: input.trim() && !loading ? C.teal : C.tealLt, border: "none", borderRadius: 12,
-          padding: "12px 20px", color: C.white, fontSize: 14, fontWeight: 600, cursor: input.trim() && !loading ? "pointer" : "default", transition: "all 0.15s",
-        }}>Send</button>
+          padding: "12px 20px", color: C.white, fontSize: isMobile ? 18 : 14, fontWeight: 600,
+          cursor: input.trim() && !loading ? "pointer" : "default", transition: "all 0.15s",
+          minWidth: isMobile ? 48 : "auto",
+        }}>{isMobile ? "↑" : "Send"}</button>
       </div>
     </div>
   );
@@ -674,10 +684,11 @@ function ChatView({ isCoach }) {
 // ── COACH OVERVIEW ────────────────────────────────────────────────────────────
 
 function CoachOverview() {
+  const isMobile = useIsMobile();
   return (
     <div>
       <SectionTitle sub="Kelly Hagen Kasai — Unleashed: The YouX Experience">Client Overview</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginBottom: 20 }}>
         {[
           { label: "Sessions Complete", value: "4 of 6+", color: C.teal },
           { label: "Open Homework Items", value: "5", color: C.clay },
@@ -724,6 +735,7 @@ function CoachOverview() {
 // ── ROOT APP ──────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const isMobile = useIsMobile();
   const [role, setRole] = useState("client");
   const [tab, setTab] = useState("sessions");
   const isCoach = role === "coach";
@@ -757,7 +769,7 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: C.warm, fontFamily: "'Inter', system-ui, sans-serif" }}>
       {/* Header */}
-      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}`, padding: "0 28px", boxShadow: "0 1px 8px rgba(45,58,53,0.06)" }}>
+      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}`, padding: isMobile ? "0 16px" : "0 28px", boxShadow: "0 1px 8px rgba(45,58,53,0.06)" }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ width: 32, height: 32, borderRadius: "50%", background: `linear-gradient(135deg, ${C.teal}, ${C.sage})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>🌿</div>
@@ -780,17 +792,21 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 28px" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: isMobile ? "0 16px" : "0 28px" }}>
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 2, borderBottom: `1px solid ${C.border}`, marginBottom: 24 }}>
+        <div style={{ display: "flex", gap: 2, borderBottom: `1px solid ${C.border}`, marginBottom: 24, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              padding: "14px 18px", fontSize: 13, fontWeight: 600, border: "none", background: "none",
+              padding: isMobile ? "12px 12px" : "14px 18px",
+              fontSize: isMobile ? 12 : 13, fontWeight: 600, border: "none", background: "none",
               color: tab === t.id ? C.teal : C.textLt,
               borderBottom: `2px solid ${tab === t.id ? C.teal : "transparent"}`,
-              cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 6,
+              cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center",
+              gap: isMobile ? 4 : 6, flexShrink: 0, whiteSpace: "nowrap",
             }}>
-              <span>{t.icon}</span>{t.label}
+              <span style={{ fontSize: isMobile ? 16 : 14 }}>{t.icon}</span>
+              {!isMobile && t.label}
+              {isMobile && <span style={{ fontSize: 11 }}>{t.label}</span>}
             </button>
           ))}
         </div>
