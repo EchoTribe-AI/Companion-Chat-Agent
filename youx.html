@@ -1,0 +1,395 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .brand-slate  { color: #5B7A8A; }
+  .brand-gold   { color: #B8945A; }
+
+  .phone {
+    width: 300px;
+    border-radius: 36px;
+    border: 2px solid var(--color-border-secondary);
+    overflow: hidden;
+    background: #F7F5F2;
+    flex-shrink: 0;
+  }
+  .phone-header {
+    background: #2C3E47;
+    padding: 18px 20px 14px;
+    text-align: center;
+    position: relative;
+  }
+  .phone-header .notch {
+    width: 60px; height: 6px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    margin: 0 auto 16px;
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 8px;
+    justify-content: center;
+  }
+  .lotus { font-size: 20px; }
+  .app-name { font-size: 15px; font-weight: 500; color: #fff; letter-spacing: 0.04em; }
+  .app-sub { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; margin-top: 3px; text-transform: uppercase; }
+  .gold-bar { width: 40px; height: 2px; background: #B8945A; margin: 10px auto 0; border-radius: 1px; }
+
+  .phone-body { padding: 16px; background: #F7F5F2; }
+
+  .welcome-card {
+    background: #2C3E47;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-card::before {
+    content: '';
+    position: absolute; top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(184,148,90,0.15);
+  }
+  .welcome-label { font-size: 10px; color: #B8945A; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; margin-bottom: 4px; }
+  .welcome-name { font-size: 17px; font-weight: 500; color: #fff; margin-bottom: 2px; }
+  .welcome-desc { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+  .streak { display: inline-flex; align-items: center; gap: 4px; background: rgba(184,148,90,0.2); border-radius: 20px; padding: 4px 10px; margin-top: 10px; }
+  .streak span { font-size: 10px; color: #B8945A; font-weight: 500; }
+
+  .section-label { font-size: 10px; color: #8B9EAB; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; margin-bottom: 8px; margin-top: 14px; }
+
+  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .q-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 0.5px solid rgba(91,122,138,0.15);
+    padding: 12px;
+  }
+  .q-icon { font-size: 16px; margin-bottom: 6px; }
+  .q-title { font-size: 11px; font-weight: 500; color: #2C3E47; }
+  .q-sub { font-size: 10px; color: #8B9EAB; margin-top: 2px; }
+  .q-badge { display: inline-block; background: rgba(184,148,90,0.12); color: #B8945A; font-size: 9px; border-radius: 4px; padding: 1px 5px; margin-top: 4px; font-weight: 500; }
+
+  .chat-preview {
+    background: #fff;
+    border-radius: 12px;
+    border: 0.5px solid rgba(91,122,138,0.15);
+    padding: 12px;
+  }
+  .chat-bubble-neysha {
+    background: #2C3E47;
+    border-radius: 12px 12px 12px 2px;
+    padding: 8px 10px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+    max-width: 85%;
+    margin-bottom: 6px;
+  }
+  .chat-bubble-user {
+    background: rgba(184,148,90,0.15);
+    border-radius: 12px 12px 2px 12px;
+    padding: 8px 10px;
+    font-size: 10px;
+    color: #2C3E47;
+    line-height: 1.5;
+    max-width: 85%;
+    margin-left: auto;
+    margin-bottom: 4px;
+  }
+  .chat-input-row {
+    display: flex; gap: 6px; align-items: center; margin-top: 8px;
+    border-top: 0.5px solid rgba(91,122,138,0.1);
+    padding-top: 8px;
+  }
+  .chat-input-fake {
+    flex: 1; height: 28px;
+    background: #F7F5F2;
+    border-radius: 14px;
+    font-size: 10px;
+    color: #8B9EAB;
+    display: flex; align-items: center; padding: 0 10px;
+  }
+  .send-btn {
+    width: 28px; height: 28px;
+    background: #B8945A;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .send-arrow { width: 10px; height: 10px; border-top: 1.5px solid #fff; border-right: 1.5px solid #fff; transform: rotate(45deg) translate(-1px, 1px); }
+
+  .tab-bar {
+    display: flex; justify-content: space-around;
+    background: #fff;
+    border-top: 0.5px solid rgba(91,122,138,0.15);
+    padding: 10px 0 14px;
+  }
+  .tab-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .tab-dot { width: 18px; height: 18px; border-radius: 5px; }
+  .tab-dot.active { background: #2C3E47; }
+  .tab-dot.inactive { background: rgba(91,122,138,0.2); }
+  .tab-lbl { font-size: 8px; color: #8B9EAB; }
+  .tab-lbl.active { color: #2C3E47; font-weight: 500; }
+
+  .phone2 { background: #fff; }
+  .coach-header {
+    background: #2C3E47;
+    padding: 18px 20px 14px;
+  }
+  .coach-header .notch { width: 60px; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; margin: 0 auto 16px; }
+  .coach-title { font-size: 13px; font-weight: 500; color: #fff; }
+  .coach-sub { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .gold-dot { width: 6px; height: 6px; border-radius: 50%; background: #B8945A; }
+
+  .client-card {
+    background: #F7F5F2;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #2C3E47;
+    color: #B8945A;
+    font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .client-info { flex: 1; }
+  .client-name { font-size: 12px; font-weight: 500; color: #2C3E47; }
+  .client-meta { font-size: 10px; color: #8B9EAB; margin-top: 1px; }
+  .client-badge { font-size: 9px; background: rgba(184,148,90,0.12); color: #B8945A; border-radius: 4px; padding: 2px 6px; font-weight: 500; }
+  .pattern-tag { font-size: 9px; background: rgba(44,62,71,0.08); color: #5B7A8A; border-radius: 4px; padding: 2px 6px; }
+
+  .msg-row {
+    display: flex; gap: 8px; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .msg-avatar { width: 26px; height: 26px; border-radius: 50%; background: rgba(184,148,90,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #B8945A; font-weight: 500; }
+  .msg-body { flex: 1; }
+  .msg-name { font-size: 9px; color: #8B9EAB; margin-bottom: 3px; }
+  .msg-text { font-size: 10px; color: #2C3E47; line-height: 1.5; background: #F7F5F2; border-radius: 10px 10px 10px 2px; padding: 7px 9px; }
+  .msg-time { font-size: 8px; color: #8B9EAB; margin-top: 2px; }
+
+  .label-pill {
+    display: inline-flex; gap: 5px; align-items: center;
+    font-size: 9px; color: #8B9EAB;
+    margin-bottom: 6px;
+  }
+  .pill-line { flex: 1; height: 0.5px; background: rgba(91,122,138,0.2); }
+
+  .tier-card {
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border: 0.5px solid rgba(91,122,138,0.15);
+  }
+  .tier-free { background: #F7F5F2; }
+  .tier-companion { background: #fff; border-color: #B8945A; }
+  .tier-vip { background: #2C3E47; }
+  .tier-name { font-size: 10px; font-weight: 500; }
+  .tier-name.light { color: #2C3E47; }
+  .tier-name.gold { color: #B8945A; }
+  .tier-name.white { color: #fff; }
+  .tier-desc { font-size: 9px; color: #8B9EAB; margin-top: 1px; }
+  .tier-desc.on-dark { color: rgba(255,255,255,0.5); }
+  .tier-price { font-size: 12px; font-weight: 500; color: #B8945A; float: right; margin-top: -18px; }
+
+  .wrapper {
+    display: flex; gap: 20px; justify-content: center; align-items: flex-start;
+    padding: 24px 16px;
+    flex-wrap: wrap;
+  }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .col-label { font-size: 11px; color: var(--color-text-secondary); text-align: center; letter-spacing: 0.04em; }
+
+  .palette-row { display: flex; gap: 6px; justify-content: center; }
+  .swatch { width: 28px; height: 28px; border-radius: 6px; }
+  .swatch-label { font-size: 8px; color: var(--color-text-secondary); text-align: center; margin-top: 2px; }
+</style>
+
+<div class="wrapper">
+
+  <div class="col">
+    <div class="col-label">Client view — home</div>
+    <div class="phone">
+      <div class="phone-header">
+        <div class="notch"></div>
+        <div class="logo-row">
+          <span class="lotus">☽</span>
+          <div>
+            <div class="app-name">You X Companion</div>
+            <div class="app-sub">You Exponentially Empowered</div>
+          </div>
+        </div>
+        <div class="gold-bar"></div>
+      </div>
+      <div class="phone-body">
+        <div class="welcome-card">
+          <div class="welcome-label">Good morning</div>
+          <div class="welcome-name">Kelly</div>
+          <div class="welcome-desc">Session 4 complete · 2 items pending</div>
+          <div class="streak"><span>37 day streak</span></div>
+        </div>
+
+        <div class="section-label">Your tools</div>
+        <div class="quick-grid">
+          <div class="q-card">
+            <div class="q-icon">✦</div>
+            <div class="q-title">AI Companion</div>
+            <div class="q-sub">Ask anything</div>
+            <div class="q-badge">Active</div>
+          </div>
+          <div class="q-card">
+            <div class="q-icon">◎</div>
+            <div class="q-title">Daily Practice</div>
+            <div class="q-sub">Breathe · Journal</div>
+            <div class="q-badge">2 left today</div>
+          </div>
+          <div class="q-card">
+            <div class="q-icon">◻</div>
+            <div class="q-title">Sessions</div>
+            <div class="q-sub">4 complete</div>
+          </div>
+          <div class="q-card">
+            <div class="q-icon">◈</div>
+            <div class="q-title">Homework</div>
+            <div class="q-sub">2 pending</div>
+          </div>
+        </div>
+
+        <div class="section-label">Ask Neysha's companion</div>
+        <div class="chat-preview">
+          <div class="chat-bubble-neysha">I noticed you've been working on cognitive defusion this week. How are you feeling about the exclusion pattern we identified?</div>
+          <div class="chat-bubble-user">It came up again at work. I used the technique.</div>
+          <div class="chat-input-row">
+            <div class="chat-input-fake">Continue the conversation...</div>
+            <div class="send-btn"><div class="send-arrow"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab-item">
+          <div class="tab-dot active"></div>
+          <div class="tab-lbl active">Home</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-dot inactive"></div>
+          <div class="tab-lbl">Sessions</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-dot inactive"></div>
+          <div class="tab-lbl">Practice</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-dot inactive"></div>
+          <div class="tab-lbl">Messages</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-row">
+      <div>
+        <div class="swatch" style="background:#2C3E47;"></div>
+        <div class="swatch-label">Slate</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#B8945A;"></div>
+        <div class="swatch-label">Gold</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#F7F5F2;"></div>
+        <div class="swatch-label">Warm</div>
+      </div>
+      <div>
+        <div class="swatch" style="background:#8B9EAB;"></div>
+        <div class="swatch-label">Mist</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="col-label">Coach console — clients</div>
+    <div class="phone phone2" style="background:#F7F5F2;">
+      <div class="coach-header">
+        <div class="notch"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="coach-title">Coach Console</div>
+            <div class="coach-sub">Neysha Arcelay, PhD(c)</div>
+          </div>
+          <div class="gold-dot"></div>
+        </div>
+      </div>
+      <div class="phone-body">
+        <div class="section-label">Active clients</div>
+
+        <div class="client-card">
+          <div class="avatar">KH</div>
+          <div class="client-info">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <div class="client-name">Kelly H.</div>
+              <div class="client-badge">VIP</div>
+            </div>
+            <div class="client-meta">Session 4 · Emotional Control</div>
+            <div class="pattern-tag" style="margin-top:4px;display:inline-block;">Exclusion pattern active</div>
+          </div>
+        </div>
+
+        <div class="client-card">
+          <div class="avatar">SM</div>
+          <div class="client-info">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="client-name">Sarah M.</div>
+              <div class="client-badge">VIP</div>
+            </div>
+            <div class="client-meta">Session 2 · Belief Systems</div>
+            <div class="pattern-tag" style="margin-top:4px;display:inline-block;">3 homework items due</div>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:14px;">Coach messages</div>
+
+        <div class="msg-row">
+          <div class="msg-avatar">KH</div>
+          <div class="msg-body">
+            <div class="msg-name">Kelly H. · 2h ago</div>
+            <div class="msg-text">I used the cognitive defusion today and it actually helped. Can we talk about what came up?</div>
+            <div class="msg-time">Tap to reply</div>
+          </div>
+        </div>
+
+        <div class="msg-row">
+          <div class="msg-avatar">SM</div>
+          <div class="msg-body">
+            <div class="msg-name">Sarah M. · yesterday</div>
+            <div class="msg-text">I'm struggling with the journaling homework. Not sure where to start.</div>
+            <div class="msg-time">Tap to reply</div>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:14px;">Companion tiers</div>
+
+        <div class="tier-card tier-free">
+          <div class="tier-name light">Free Access</div>
+          <div class="tier-price" style="color:#8B9EAB;">Free</div>
+          <div class="tier-desc">Tools, community, Withme resources</div>
+        </div>
+        <div class="tier-card tier-companion">
+          <div class="tier-name gold">You X Companion</div>
+          <div class="tier-price">$55/mo</div>
+          <div class="tier-desc">AI companion + meditations + You X program</div>
+        </div>
+        <div class="tier-card tier-vip">
+          <div class="tier-name white">VIP + Resonance Code</div>
+          <div class="tier-price">Apply</div>
+          <div class="tier-desc on-dark">1:1 coaching + full personalized companion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
